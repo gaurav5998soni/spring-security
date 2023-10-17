@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -25,7 +26,7 @@ public class RestSecurityConfig {
     SecurityFilterChain myCustomSecurityChainFilter(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(request-> {
-                     request.requestMatchers("/contact", "/notice", "/h2-console/**").permitAll();
+                     request.requestMatchers("/contact", "/notices", "/register").permitAll();
                      request.requestMatchers("/myAccount", "/myCards", "/myProfile").authenticated();
                  }
 
@@ -43,7 +44,7 @@ public class RestSecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 
 }
